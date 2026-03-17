@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Diaz Rahardi - Digital Space</title>
+  
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Lucide Icons via CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+
+  <style>
+    /* Kunci Layar agar tidak geser horizontal */
+    html, body {
+      max-width: 100vw;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    /* Font Configurations */
+    body { font-family: 'Inter', sans-serif; }
+    .font-serif { font-family: 'Playfair Display', serif; }
+    .font-sans { font-family: 'Inter', sans-serif; }
+    .text-balance { text-wrap: balance; }
+
+    /* iOS 26 Glassmorphism Styles */
+    .glass {
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.03);
+    }
+    .glass-dark {
+      background: rgba(34, 34, 34, 0.7);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+    }
+    .glass-pill {
+      background: rgba(249, 249, 247, 0.75);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Elegant Background Grid & Ambient Orbs */
+    .bg-grid-pattern {
+      background-image: 
+        linear-gradient(to right, rgba(227, 225, 217, 0.3) 1px, transparent 1px), 
+        linear-gradient(to bottom, rgba(227, 225, 217, 0.3) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    
+    @keyframes floatOrb {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(30px, -50px) scale(1.1); }
+      66% { transform: translate(-20px, 20px) scale(0.9); }
+    }
+    .orb {
+      position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.6; z-index: -10;
+      animation: floatOrb 20s infinite ease-in-out;
+    }
+
+    /* Bilingual System Setup */
+    body[data-lang="en"] .lang-id { display: none !important; }
+    body[data-lang="id"] .lang-en { display: none !important; }
+
+    /* Scroll Animations */
+    .fade-element { opacity: 0; transition: all 1s cubic-bezier(0.22, 1, 0.36, 1); }
+    .fade-up { transform: translateY(2rem); }
+    .fade-left { transform: translateX(2rem); }
+    .is-visible { opacity: 1; transform: translate(0); }
+  </style>
+</head>
+<body data-lang="en" class="min-h-screen bg-[#F9F9F7] text-[#222222] selection:bg-[#E3E1D9] selection:text-black relative">
+
+  <!-- iOS Ambient Background -->
+  <div class="fixed inset-0 bg-grid-pattern pointer-events-none -z-20 w-full h-full"></div>
+  <div class="fixed inset-0 w-full h-full overflow-hidden pointer-events-none -z-10">
+    <div class="orb bg-[#EAE6DF]" style="top: -10%; left: -10%; width: 50vw; height: 50vw;"></div>
+    <div class="orb bg-white" style="bottom: -10%; right: -10%; width: 60vw; height: 60vw; animation-delay: -5s;"></div>
+    <div class="orb bg-[#D5D2C8]/40" style="top: 40%; left: 30%; width: 40vw; height: 40vw; animation-delay: -10s;"></div>
+  </div>
+
+  <!-- --- NAVIGATION (Static Glass Navbar) --- -->
+  <div class="fixed w-full top-4 md:top-6 z-50 flex justify-center px-4 pointer-events-none">
+    <nav id="navbar" class="glass rounded-[2rem] px-5 md:px-8 py-3.5 md:py-5 flex justify-between items-center w-full max-w-6xl pointer-events-auto">
+      <button onclick="scrollToId('home')" id="logo-text" class="font-serif text-xl md:text-2xl font-medium tracking-wide whitespace-nowrap">
+        Diaz Rahardi.
+      </button>
+      
+      <div id="nav-links" class="hidden md:flex items-center gap-8 text-sm uppercase tracking-widest text-[#666666]">
+        <button onclick="scrollToId('home')" class="hover:text-[#222222] transition-colors relative group">
+          <span class="lang-en">Home</span><span class="lang-id">Beranda</span>
+        </button>
+        <button onclick="scrollToId('about-diaz')" class="hover:text-[#222222] transition-colors relative group">
+          <span class="lang-en">About Diaz</span><span class="lang-id">Tentang</span>
+        </button>
+        <button onclick="scrollToId('talk')" class="hover:text-[#222222] transition-colors relative group">
+          <span class="lang-en">Let's Talk</span><span class="lang-id">Mari Ngobrol</span>
+        </button>
+        <button onclick="scrollToId('reading-list')" class="hover:text-[#222222] transition-colors relative group">
+          <span class="lang-en">Reading List</span><span class="lang-id">Daftar Bacaan</span>
+        </button>
+        <button onclick="scrollToId('contact')" class="hover:text-[#222222] transition-colors relative group">
+          <span class="lang-en">Contact</span><span class="lang-id">Kontak</span>
+        </button>
+      </div>
+
+      <div class="flex items-center gap-2 md:gap-4 shrink-0">
+        <button onclick="toggleLanguage()" class="flex items-center gap-1.5 md:gap-2 text-[10px] md:text-xs font-semibold uppercase tracking-widest px-3 py-1.5 rounded-full bg-white/60 shadow-sm border border-white hover:bg-white transition-colors">
+          <i data-lucide="globe" class="w-3.5 h-3.5"></i> <span id="lang-toggle-text" class="inline-block w-4 text-center">ID</span>
+        </button>
+        <button id="menu-btn" onclick="toggleMobileMenu()" class="md:hidden text-xs uppercase tracking-widest bg-white/60 px-4 py-1.5 rounded-full border border-white transition-colors">Menu</button>
+      </div>
+    </nav>
+  </div>
+
+  <!-- --- MOBILE MENU OVERLAY --- -->
+  <div id="mobile-menu" class="fixed inset-0 bg-[#F9F9F7]/95 backdrop-blur-xl z-[45] flex flex-col items-center justify-center gap-8 opacity-0 pointer-events-none transition-all duration-500">
+    <button onclick="scrollToId('home'); toggleMobileMenu()" class="font-serif text-3xl hover:text-[#666666] transition-colors">
+      <span class="lang-en">Home</span><span class="lang-id">Beranda</span>
+    </button>
+    <button onclick="scrollToId('about-diaz'); toggleMobileMenu()" class="font-serif text-3xl hover:text-[#666666] transition-colors">
+      <span class="lang-en">About Diaz</span><span class="lang-id">Tentang</span>
+    </button>
+    <button onclick="scrollToId('talk'); toggleMobileMenu()" class="font-serif text-3xl hover:text-[#666666] transition-colors">
+      <span class="lang-en">Let's Talk</span><span class="lang-id">Mari Ngobrol</span>
+    </button>
+    <button onclick="scrollToId('reading-list'); toggleMobileMenu()" class="font-serif text-3xl hover:text-[#666666] transition-colors">
+      <span class="lang-en">Reading List</span><span class="lang-id">Daftar Bacaan</span>
+    </button>
+    <button onclick="scrollToId('contact'); toggleMobileMenu()" class="font-serif text-3xl hover:text-[#666666] transition-colors">
+      <span class="lang-en">Contact</span><span class="lang-id">Kontak</span>
+    </button>
+  </div>
+
+  <main class="w-full">
+    <!-- --- HERO SECTION (Asimetris) --- -->
+    <section id="home" class="relative min-h-screen flex items-center pt-28 pb-16 w-full">
+      <div class="max-w-6xl mx-auto px-6 w-full grid md:grid-cols-12 gap-12 items-center relative z-10">
+        
+        <!-- Kolom Kiri: Teks -->
+        <div class="md:col-span-7 space-y-8">
+          <div class="fade-element fade-up">
+            <div class="inline-block glass px-4 py-2 rounded-full mb-6">
+              <p class="text-[#666666] uppercase tracking-[0.2em] text-[10px] font-semibold transition-all lang-en">A digital space for ideas, growth & reflection.</p>
+              <p class="text-[#666666] uppercase tracking-[0.2em] text-[10px] font-semibold transition-all lang-id">Ruang digital untuk gagasan & refleksi.</p>
+            </div>
+            <h1 class="font-serif text-6xl md:text-8xl font-medium leading-[1.05] tracking-tight mb-8 text-balance">
+              Diaz Rahardi
+            </h1>
+          </div>
+          
+          <div class="fade-element fade-up" data-delay="150">
+            <div class="flex flex-wrap gap-3 mb-8">
+              <span class="glass px-4 py-2 rounded-full text-[10px] uppercase tracking-[0.15em] text-[#444444] font-medium shadow-sm">Artificial Intelligence</span>
+              <span class="glass px-4 py-2 rounded-full text-[10px] uppercase tracking-[0.15em] text-[#444444] font-medium shadow-sm">Philosophy</span>
+              <span class="glass px-4 py-2 rounded-full text-[10px] uppercase tracking-[0.15em] text-[#444444] font-medium shadow-sm">Stoicism</span>
+            </div>
+
+            <p class="font-sans text-lg md:text-xl text-[#555555] font-light leading-relaxed max-w-xl transition-all lang-en">
+              Diaz Rahardi is someone deeply interested in artificial intelligence, philosophy, and the exploration of ideas. Through reading, reflection, and experimentation with technology, he is constantly searching for better ways to understand the world and improve himself.
+            </p>
+            <p class="font-sans text-lg md:text-xl text-[#555555] font-light leading-relaxed max-w-xl transition-all lang-id">
+              Diaz Rahardi adalah seseorang yang sangat tertarik pada kecerdasan buatan, filsafat, dan eksplorasi gagasan. Melalui membaca, refleksi, dan eksperimen dengan teknologi, ia terus mencari cara yang lebih baik untuk memahami dunia dan mengembangkan dirinya.
+            </p>
+          </div>
+
+          <div class="fade-element fade-up" data-delay="300">
+            <button onclick="scrollToId('talk')" class="mt-4 flex items-center gap-3 font-serif italic text-lg hover:opacity-70 transition-opacity bg-white/50 px-6 py-3 rounded-full border border-white shadow-sm hover:shadow-md">
+              <span class="lang-en">Explore the thinking space</span>
+              <span class="lang-id">Jelajahi ruang pemikiran</span>
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Kolom Kanan: Foto -->
+        <div class="md:col-span-5 relative fade-element fade-left" data-delay="300">
+          <div class="aspect-[3/4] p-3 glass rounded-[2.5rem] shadow-2xl relative z-10 mx-auto">
+            <div class="w-full h-full overflow-hidden rounded-[2rem]">
+              <img 
+                src="https://i.ibb.co/Q303y0dr/image.jpg" 
+                alt="Diaz Rahardi" 
+                class="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+          <div class="absolute -bottom-10 -right-4 w-48 h-48 bg-[#EAE6DF]/60 rounded-full blur-2xl -z-10"></div>
+        </div>
+      </div>
+
+      <div class="absolute bottom-6 left-1/2 -translate-x-1/2 animate-bounce opacity-70 z-20 glass p-3 rounded-full hidden md:block">
+        <i data-lucide="arrow-down" class="w-5 h-5" stroke-width="1.5"></i>
+      </div>
+    </section>
+
+    <!-- Editorial Divider -->
+    <div class="flex items-center justify-center py-12 opacity-40 w-full overflow-hidden">
+      <div class="h-[1px] w-12 bg-[#222]"></div>
+      <i data-lucide="asterisk" class="w-4 h-4 text-[#222] mx-4"></i>
+      <div class="h-[1px] w-12 bg-[#222]"></div>
+    </div>
+
+    <!-- --- ABOUT DIAZ SECTION --- -->
+    <section id="about-diaz" class="py-24 relative z-10 w-full">
+      <div class="max-w-4xl mx-auto px-6 w-full">
+        <div class="glass rounded-[3rem] p-8 md:p-20 shadow-xl w-full">
+          <div class="fade-element fade-up">
+            <h2 class="font-serif text-4xl mb-12 text-center italic lang-en">About Diaz</h2>
+            <h2 class="font-serif text-4xl mb-12 text-center italic lang-id">Tentang Diaz</h2>
+          </div>
+          
+          <div class="space-y-8 font-sans text-lg text-[#444444] font-light leading-[1.8] transition-all relative">
+            <div class="fade-element fade-up" data-delay="100">
+              <p class="first-letter:font-serif first-letter:text-6xl first-letter:font-medium first-letter:float-left first-letter:mr-3 first-letter:mt-1 lang-en">
+                Diaz Rahardi is someone who lives between the world of ideas and technology. His curiosity revolves around artificial intelligence and philosophy, two fields that shape the way he sees the future and questions the present.
+              </p>
+              <p class="first-letter:font-serif first-letter:text-6xl first-letter:font-medium first-letter:float-left first-letter:mr-3 first-letter:mt-1 lang-id">
+                Diaz Rahardi adalah seseorang yang hidup di antara dunia gagasan dan teknologi. Rasa ingin tahunya berkisar pada kecerdasan buatan dan filsafat, dua bidang yang membentuk cara ia melihat masa depan dan mempertanyakan masa kini.
+              </p>
+            </div>
+            <div class="fade-element fade-up" data-delay="200">
+              <p class="lang-en">Outside the digital world, Diaz is an avid reader. Books are where he collects perspectives—from classic ideas to modern thinking. Through reading, he continuously develops a more thoughtful and critical way of understanding the world.</p>
+              <p class="lang-id">Di luar dunia digital, Diaz adalah seorang pembaca setia. Buku adalah tempat ia mengumpulkan berbagai perspektif—dari pemikiran klasik hingga modern. Melalui membaca, ia terus mengembangkan cara yang lebih bijaksana dan kritis dalam memahami dunia.</p>
+            </div>
+            <div class="fade-element fade-up" data-delay="300">
+              <p class="lang-en">In his personal journey, Diaz has experimented with practices such as dopamine detox to regain control of attention in a highly distracting digital environment. That process became a discipline in learning how to focus, reflect, and grow.</p>
+              <p class="lang-id">Dalam perjalanan pribadinya, Diaz telah bereksperimen dengan praktik seperti puasa dopamin (dopamine detox) untuk mendapatkan kembali kendali atas perhatiannya di lingkungan digital yang sangat mendistraksi. Proses tersebut menjadi sebuah disiplin dalam belajar bagaimana untuk fokus, berefleksi, dan bertumbuh.</p>
+            </div>
+            <div class="fade-element fade-up" data-delay="400">
+              <p class="lang-en">He is also deeply interested in understanding human relationships. While much of this knowledge comes from observation and study, it continues to shape the way he thinks about connection, trust, and human dynamics.</p>
+              <p class="lang-id">Ia juga sangat tertarik untuk memahami hubungan antarmanusia. Meskipun banyak dari pengetahuan ini berasal dari observasi dan studi, hal itu terus membentuk cara ia berpikir tentang koneksi, kepercayaan, dan dinamika manusia.</p>
+            </div>
+            <div class="fade-element fade-up" data-delay="500">
+              <p class="lang-en">Diaz is strongly influenced by Stoic principles—focusing on what can be controlled, accepting uncertainty, and building inner discipline.</p>
+              <p class="lang-id">Diaz sangat dipengaruhi oleh prinsip-prinsip Stoik—fokus pada apa yang dapat dikendalikan, menerima ketidakpastian, dan membangun disiplin batin.</p>
+              
+              <div class="mt-12 py-8 bg-white/40 rounded-2xl border border-white text-center shadow-sm w-full">
+                <p class="font-serif italic text-xl md:text-2xl text-[#222222] transition-all lang-en px-4">"For him, ideas are not just something to consume, but something to explore."</p>
+                <p class="font-serif italic text-xl md:text-2xl text-[#222222] transition-all lang-id px-4">"Baginya, gagasan bukanlah sekadar sesuatu untuk dikonsumsi, melainkan sesuatu untuk dieksplorasi."</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- --- STOIC QUOTE SECTION (Dark Glass) --- -->
+    <section class="py-24 relative z-10 w-full">
+      <div class="max-w-4xl mx-auto px-6 w-full">
+        <div class="glass-dark rounded-[3rem] p-10 md:p-20 text-center shadow-2xl text-[#F9F9F7] w-full">
+          <div class="fade-element fade-up">
+            <i data-lucide="quote" class="w-8 h-8 mx-auto text-white/30 mb-8"></i>
+            <h3 class="font-serif text-2xl md:text-4xl lg:text-5xl font-light italic leading-relaxed mb-10 transition-all lang-en">"You have power over your mind - not outside events. Realize this, and you will find strength."</h3>
+            <h3 class="font-serif text-2xl md:text-4xl lg:text-5xl font-light italic leading-relaxed mb-10 transition-all lang-id">"Kamu memiliki kendali atas pikiranmu - bukan kejadian di luar sana. Sadari hal ini, dan kamu akan menemukan kekuatan."</h3>
+            <div class="w-12 h-[1px] bg-white/20 mx-auto mb-6"></div>
+            <p class="font-sans uppercase tracking-[0.2em] text-xs text-white/60">Marcus Aurelius</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- --- LET'S TALK SECTION (Asimetris 5:7) --- -->
+    <section id="talk" class="py-24 relative z-10 w-full">
+      <div class="max-w-6xl mx-auto px-6 w-full">
+        <div class="fade-element fade-up">
+          <div class="flex justify-between items-end mb-16 px-4">
+            <div>
+              <h2 class="font-serif text-4xl mb-3 lang-en">Open for Conversations</h2>
+              <h2 class="font-serif text-4xl mb-3 lang-id">Mari Mengobrol</h2>
+              <div class="glass inline-block px-4 py-1.5 rounded-full">
+                <p class="font-sans text-xs text-[#666666] font-medium tracking-wide lang-en">A safe space to vent, share stories, or discuss ideas.</p>
+                <p class="font-sans text-xs text-[#666666] font-medium tracking-wide lang-id">Ruang aman untuk curhat, berbagi cerita, atau berdiskusi.</p>
+              </div>
+            </div>
+            <div class="glass p-4 rounded-full hidden md:block">
+              <i data-lucide="message-circle" class="text-[#222222] w-6 h-6"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-12 gap-8 items-start">
+          <div class="md:col-span-5 fade-element fade-up glass rounded-[2.5rem] p-10 shadow-lg" data-delay="100">
+            <p class="font-sans text-lg text-[#444444] font-light leading-relaxed mb-8 lang-en">I believe that the best perspectives often come from listening to others. Whether you are going through a tough time and need a listener, or you have a burning idea you want to discuss, my door is always open. Do not hesitate to reach out.</p>
+            <p class="font-sans text-lg text-[#444444] font-light leading-relaxed mb-8 lang-id">Saya percaya bahwa perspektif terbaik sering kali datang dari mendengarkan orang lain. Entah kamu sedang melewati masa sulit dan butuh pendengar, atau punya ide menarik untuk didiskusikan, pintu saya selalu terbuka. Jangan ragu untuk menyapa.</p>
+            <button onclick="scrollToId('contact')" class="inline-flex items-center gap-2 font-sans text-sm font-medium uppercase tracking-widest text-white bg-[#222222] px-6 py-4 rounded-full hover:bg-[#444444] shadow-xl hover:-translate-y-1 transition-all">
+              <span class="lang-en">Start a Conversation</span><span class="lang-id">Mulai Percakapan</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+          </div>
+
+          <div class="md:col-span-7 grid sm:grid-cols-2 gap-6">
+            <!-- Option 1 -->
+            <div class="glass rounded-[2rem] p-8 hover:-translate-y-1 hover:shadow-lg transition-all fade-element fade-up" data-delay="200">
+              <h3 class="font-serif text-2xl mb-4 text-[#222222] transition-colors lang-en">Share & Vent</h3>
+              <h3 class="font-serif text-2xl mb-4 text-[#222222] transition-colors lang-id">Tempat Curhat</h3>
+              <p class="font-sans text-[#666666] font-light leading-relaxed lang-en">Going through a rough patch or feeling overwhelmed? Let's talk it out in a judgment-free space.</p>
+              <p class="font-sans text-[#666666] font-light leading-relaxed lang-id">Sedang banyak pikiran atau merasa kewalahan? Ceritakan semuanya di ruang yang aman dan tanpa penghakiman.</p>
+            </div>
+            <!-- Option 2 -->
+            <div class="glass rounded-[2rem] p-8 hover:-translate-y-1 hover:shadow-lg transition-all fade-element fade-up" data-delay="300">
+              <h3 class="font-serif text-2xl mb-4 text-[#222222] transition-colors lang-en">Deep Discussions</h3>
+              <h3 class="font-serif text-2xl mb-4 text-[#222222] transition-colors lang-id">Diskusi Mendalam</h3>
+              <p class="font-sans text-[#666666] font-light leading-relaxed lang-en">Want to dissect a philosophy book, a social phenomenon, or a crazy idea? I am all ears.</p>
+              <p class="font-sans text-[#666666] font-light leading-relaxed lang-id">Ingin membedah buku filsafat, fenomena sosial, atau ide gila yang melintas di kepalamu? Mari kita diskusikan.</p>
+            </div>
+            <!-- Option 3 -->
+            <div class="glass rounded-[2rem] p-8 hover:-translate-y-1 hover:shadow-lg transition-all fade-element fade-up sm:col-span-2" data-delay="400">
+              <h3 class="font-serif text-2xl mb-4 text-[#222222] transition-colors lang-en">Casual Connect</h3>
+              <h3 class="font-serif text-2xl mb-4 text-[#222222] transition-colors lang-id">Koneksi Santai</h3>
+              <p class="font-sans text-[#666666] font-light leading-relaxed lang-en">Just want to say hi, share a book recommendation, or expand your network? Feel free to drop a message.</p>
+              <p class="font-sans text-[#666666] font-light leading-relaxed lang-id">Hanya ingin menyapa, membagikan rekomendasi buku, atau memperluas jaringan? Jangan ragu untuk mengirim pesan.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Editorial Divider -->
+    <div class="flex items-center justify-center py-8 opacity-40 relative z-10 w-full overflow-hidden">
+      <div class="h-[1px] w-12 bg-[#222]"></div>
+      <i data-lucide="asterisk" class="w-4 h-4 text-[#222] mx-4"></i>
+      <div class="h-[1px] w-12 bg-[#222]"></div>
+    </div>
+
+    <!-- --- READING LIST SECTION --- -->
+    <section id="reading-list" class="py-24 relative z-10 w-full">
+      <div class="max-w-6xl mx-auto px-6 w-full">
+        <div class="fade-element fade-up">
+          <div class="flex justify-between items-end mb-16 px-4">
+            <div>
+              <h2 class="font-serif text-4xl mb-3 lang-en">Reading List</h2>
+              <h2 class="font-serif text-4xl mb-3 lang-id">Daftar Bacaan</h2>
+              <div class="glass inline-block px-4 py-1.5 rounded-full">
+                <p class="font-sans text-xs text-[#666666] font-medium tracking-wide lang-en">Books that shape the mindset.</p>
+                <p class="font-sans text-xs text-[#666666] font-medium tracking-wide lang-id">Buku-buku yang membentuk pola pikir.</p>
+              </div>
+            </div>
+            <div class="glass p-4 rounded-full hidden md:block">
+              <i data-lucide="book" class="text-[#222222] w-6 h-6"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-8 w-full">
+          <!-- Book 1 -->
+          <div class="glass rounded-[2.5rem] p-6 md:p-8 flex flex-col md:flex-row gap-8 items-center md:items-start fade-element fade-up hover:shadow-xl transition-all" data-delay="0">
+            <div class="w-48 md:w-40 aspect-[2/3] shrink-0 bg-[#222222] text-[#F9F9F7] rounded-lg shadow-2xl relative overflow-hidden flex flex-col justify-between p-4 border border-[#444]">
+              <div class="absolute left-4 top-0 bottom-0 w-[1px] bg-white/10"></div>
+              <div class="relative z-10 text-center mt-6">
+                <p class="font-sans text-[8px] uppercase tracking-widest text-white/50 mb-3 line-clamp-1 lang-en">Philosophy</p>
+                <p class="font-sans text-[8px] uppercase tracking-widest text-white/50 mb-3 line-clamp-1 lang-id">Filsafat</p>
+                <h4 class="font-serif text-xl leading-snug">Meditations</h4>
+              </div>
+              <div class="relative z-10 text-center mb-2">
+                <div class="w-4 h-[1px] bg-white/20 mx-auto mb-3"></div>
+                <p class="font-sans text-[9px] uppercase tracking-widest text-white/70">Marcus Aurelius</p>
+              </div>
+            </div>
+            <div class="flex-1 text-center md:text-left pt-4 w-full">
+              <p class="font-sans text-xs uppercase tracking-widest text-[#999999] mb-2 transition-all lang-en">Philosophy</p>
+              <p class="font-sans text-xs uppercase tracking-widest text-[#999999] mb-2 transition-all lang-id">Filsafat</p>
+              <h3 class="font-serif text-4xl mb-2">Meditations</h3>
+              <p class="font-sans text-[#666666] mb-8 italic">by Marcus Aurelius</p>
+              
+              <div class="bg-white/50 rounded-2xl p-6 border border-white transition-all text-left">
+                <p class="font-sans text-[10px] font-bold uppercase tracking-widest text-[#222222] mb-3 lang-en">Key Takeaway</p>
+                <p class="font-sans text-[10px] font-bold uppercase tracking-widest text-[#222222] mb-3 lang-id">Pelajaran Utama</p>
+                <p class="font-sans text-[#444444] font-light leading-relaxed lang-en">A profound exploration of resilience and self-control. It teaches the essential discipline of distinguishing what is within our control from what is not.</p>
+                <p class="font-sans text-[#444444] font-light leading-relaxed lang-id">Eksplorasi mendalam tentang resiliensi dan kendali diri. Buku ini mengajarkan disiplin esensial untuk membedakan apa yang ada dalam kendali kita dan apa yang tidak.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Book 2 -->
+          <div class="glass rounded-[2.5rem] p-6 md:p-8 flex flex-col md:flex-row gap-8 items-center md:items-start fade-element fade-up hover:shadow-xl transition-all" data-delay="100">
+            <div class="w-48 md:w-40 aspect-[2/3] shrink-0 bg-[#222222] text-[#F9F9F7] rounded-lg shadow-2xl relative overflow-hidden flex flex-col justify-between p-4 border border-[#444]">
+              <div class="absolute left-4 top-0 bottom-0 w-[1px] bg-white/10"></div>
+              <div class="relative z-10 text-center mt-6">
+                <p class="font-sans text-[8px] uppercase tracking-widest text-white/50 mb-3 line-clamp-1 lang-en">Social Thought & Tech</p>
+                <p class="font-sans text-[8px] uppercase tracking-widest text-white/50 mb-3 line-clamp-1 lang-id">Sosial & Teknologi</p>
+                <h4 class="font-serif text-xl leading-snug">Homo Deus</h4>
+              </div>
+              <div class="relative z-10 text-center mb-2">
+                <div class="w-4 h-[1px] bg-white/20 mx-auto mb-3"></div>
+                <p class="font-sans text-[9px] uppercase tracking-widest text-white/70">Yuval Noah Harari</p>
+              </div>
+            </div>
+            <div class="flex-1 text-center md:text-left pt-4 w-full">
+              <p class="font-sans text-xs uppercase tracking-widest text-[#999999] mb-2 transition-all lang-en">Social Thought & Tech</p>
+              <p class="font-sans text-xs uppercase tracking-widest text-[#999999] mb-2 transition-all lang-id">Sosial & Teknologi</p>
+              <h3 class="font-serif text-4xl mb-2">Homo Deus</h3>
+              <p class="font-sans text-[#666666] mb-8 italic">by Yuval Noah Harari</p>
+              
+              <div class="bg-white/50 rounded-2xl p-6 border border-white transition-all text-left">
+                <p class="font-sans text-[10px] font-bold uppercase tracking-widest text-[#222222] mb-3 lang-en">Key Takeaway</p>
+                <p class="font-sans text-[10px] font-bold uppercase tracking-widest text-[#222222] mb-3 lang-id">Pelajaran Utama</p>
+                <p class="font-sans text-[#444444] font-light leading-relaxed lang-en">A macro-perspective on the trajectory of human evolution, raising critical questions about algorithms, consciousness, and the future of meaning.</p>
+                <p class="font-sans text-[#444444] font-light leading-relaxed lang-id">Sebuah perspektif makro mengenai lintasan evolusi manusia, memunculkan pertanyaan kritis tentang algoritma, kesadaran, dan masa depan makna hidup.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Book 3 -->
+          <div class="glass rounded-[2.5rem] p-6 md:p-8 flex flex-col md:flex-row gap-8 items-center md:items-start fade-element fade-up hover:shadow-xl transition-all" data-delay="200">
+            <div class="w-48 md:w-40 aspect-[2/3] shrink-0 bg-[#222222] text-[#F9F9F7] rounded-lg shadow-2xl relative overflow-hidden flex flex-col justify-between p-4 border border-[#444]">
+              <div class="absolute left-4 top-0 bottom-0 w-[1px] bg-white/10"></div>
+              <div class="relative z-10 text-center mt-6">
+                <p class="font-sans text-[8px] uppercase tracking-widest text-white/50 mb-3 line-clamp-1 lang-en">Philosophy & Comm.</p>
+                <p class="font-sans text-[8px] uppercase tracking-widest text-white/50 mb-3 line-clamp-1 lang-id">Filsafat & Komunikasi</p>
+                <h4 class="font-serif text-xl leading-snug">Rhetoric</h4>
+              </div>
+              <div class="relative z-10 text-center mb-2">
+                <div class="w-4 h-[1px] bg-white/20 mx-auto mb-3"></div>
+                <p class="font-sans text-[9px] uppercase tracking-widest text-white/70">Aristotle</p>
+              </div>
+            </div>
+            <div class="flex-1 text-center md:text-left pt-4 w-full">
+              <p class="font-sans text-xs uppercase tracking-widest text-[#999999] mb-2 transition-all lang-en">Philosophy & Communication</p>
+              <p class="font-sans text-xs uppercase tracking-widest text-[#999999] mb-2 transition-all lang-id">Filsafat & Komunikasi</p>
+              <h3 class="font-serif text-4xl mb-2">Rhetoric</h3>
+              <p class="font-sans text-[#666666] mb-8 italic">by Aristotle</p>
+              
+              <div class="bg-white/50 rounded-2xl p-6 border border-white transition-all text-left">
+                <p class="font-sans text-[10px] font-bold uppercase tracking-widest text-[#222222] mb-3 lang-en">Key Takeaway</p>
+                <p class="font-sans text-[10px] font-bold uppercase tracking-widest text-[#222222] mb-3 lang-id">Pelajaran Utama</p>
+                <p class="font-sans text-[#444444] font-light leading-relaxed lang-en">The foundational text on the art of persuasion. It provides a timeless framework for constructing logical, credible, and emotionally resonant arguments.</p>
+                <p class="font-sans text-[#444444] font-light leading-relaxed lang-id">Teks fundamental tentang seni persuasi. Memberikan kerangka kerja abadi untuk menyusun argumen yang logis, kredibel, dan beresonansi secara emosional.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- --- CONTACT SECTION --- -->
+    <section id="contact" class="py-32 relative z-10 w-full overflow-hidden">
+      <div class="max-w-3xl mx-auto px-6 text-center w-full">
+        <div class="fade-element fade-up">
+          <div class="w-20 h-20 glass rounded-full mx-auto flex items-center justify-center mb-8 shadow-sm">
+            <i data-lucide="mail" class="w-8 h-8 text-[#222222]"></i>
+          </div>
+          
+          <h2 class="font-serif text-5xl mb-6 lang-en">Start a Conversation</h2>
+          <h2 class="font-serif text-5xl mb-6 lang-id">Mulai Percakapan</h2>
+          <p class="font-sans text-lg text-[#555555] font-light leading-relaxed mb-12 lang-en">If you'd like to share ideas, collaborate, or simply start a conversation, feel free to reach out. I am always open to exploring new perspectives.</p>
+          <p class="font-sans text-lg text-[#555555] font-light leading-relaxed mb-12 lang-id">Jika Anda ingin berbagi gagasan, berkolaborasi, atau sekadar memulai percakapan, jangan ragu untuk menghubungi. Saya selalu terbuka untuk mengeksplorasi perspektif baru.</p>
+          
+          <div class="glass inline-block px-4 md:px-8 py-4 rounded-full mb-16 shadow-lg hover:scale-105 transition-transform max-w-full overflow-hidden">
+            <a href="mailto:pubgn2879@gmail.com" class="flex items-center justify-center gap-3 font-serif italic text-xl md:text-3xl text-[#222222] break-all">
+              pubgn2879@gmail.com
+            </a>
+          </div>
+
+          <div class="flex justify-center gap-6">
+            <a href="https://www.instagram.com/growthdz/" target="_blank" rel="noopener noreferrer" class="glass w-14 h-14 rounded-full flex items-center justify-center text-[#444] hover:text-[#222] hover:scale-110 hover:shadow-lg transition-all">
+              <i data-lucide="instagram" class="w-6 h-6"></i>
+            </a>
+            <a href="https://wa.me/qr/SWK5YLPVLT6DG1" target="_blank" rel="noopener noreferrer" class="glass w-14 h-14 rounded-full flex items-center justify-center text-[#444] hover:text-[#222] hover:scale-110 hover:shadow-lg transition-all">
+              <i data-lucide="message-circle" class="w-6 h-6"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- --- FOOTER --- -->
+  <footer class="py-8 border-t border-white/50 bg-[#F9F9F7]/50 backdrop-blur-lg text-center relative z-10 w-full">
+    <p class="font-sans text-xs uppercase tracking-widest text-[#999999]">
+      © <span id="year"></span> Diaz Rahardi. All rights reserved.
+    </p>
+  </footer>
+
+  <!-- --- JAVASCRIPT LOGIC --- -->
+  <script>
+    // Inisialisasi Lucide Icons
+    lucide.createIcons();
+
+    // Set Copyright Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // --- Bilingual Logic ---
+    let currentLang = 'en';
+    function toggleLanguage() {
+      currentLang = currentLang === 'en' ? 'id' : 'en';
+      document.body.setAttribute('data-lang', currentLang);
+      document.getElementById('lang-toggle-text').innerText = currentLang === 'en' ? 'ID' : 'EN';
+    }
+
+    // --- Mobile Menu Logic ---
+    let isMenuOpen = false;
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      const btn = document.getElementById('menu-btn');
+      isMenuOpen = !isMenuOpen;
+      
+      if (isMenuOpen) {
+        menu.classList.remove('opacity-0', 'pointer-events-none');
+        menu.classList.add('opacity-100', 'pointer-events-auto');
+        btn.innerText = 'Close';
+        btn.classList.add('bg-white');
+        document.body.style.overflow = 'hidden'; 
+      } else {
+        menu.classList.remove('opacity-100', 'pointer-events-auto');
+        menu.classList.add('opacity-0', 'pointer-events-none');
+        btn.innerText = 'Menu';
+        btn.classList.remove('bg-white');
+        document.body.style.overflow = 'auto'; 
+      }
+    }
+
+    // --- Smooth Scroll Logic ---
+    function scrollToId(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        window.scrollTo({
+          top: el.offsetTop - 100,
+          behavior: 'smooth'
+        });
+      }
+    }
+
+    // --- Fade-In Animation Logic ---
+    document.addEventListener("DOMContentLoaded", () => {
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px"
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+
+      document.querySelectorAll('.fade-element').forEach(el => {
+        const delay = el.getAttribute('data-delay');
+        if (delay) {
+          el.style.transitionDelay = `${delay}ms`;
+        }
+        observer.observe(el);
+      });
+    });
+  </script>
+</body>
+</html>
+
+
+
+
